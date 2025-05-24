@@ -62,8 +62,8 @@ function cosineSimilarity(vecA, vecB) {
 }
 
 async function askOpenAIWithEmbedding(question, closestText, onChunkReceived) {
-    const apiKey = "11x9IG7HZkyphyxj7I41UPWOshDNpWJAvUdiuUeVoxnMy6CPsY5cJQQJ99BDACYeBjFXJ3w3AAAAACOGQMYE";
-    const endpoint = "https://ai-gptai749384661431.openai.azure.com/openai/deployments/gpt-4.1-mini/chat/completions?api-version=2025-01-01-preview";
+    const apiKey = "33UVBdsOXYuThfNXPD80IpUjjxRh6aw2CzDRi5U988ySHG5lWU1OJQQJ99BDACHYHv6XJ3w3AAAAACOGM9JC";
+    const endpoint = "https://au-m9vezg5i-eastus2.openai.azure.com/openai/deployments/gpt-4.1-nano/chat/completions?api-version=2025-01-01-preview";
 
     const apiMessages = [
         {
@@ -81,10 +81,10 @@ async function askOpenAIWithEmbedding(question, closestText, onChunkReceived) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
+            "api-key": apiKey,
         },
         body: JSON.stringify({
-            model: "gpt-4.1",
+            model: "gpt-4.1-nano",
             messages: apiMessages,
             max_tokens: 5000,
             temperature: 0.7,
