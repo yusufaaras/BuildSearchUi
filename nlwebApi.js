@@ -1,8 +1,8 @@
 // API endpoint ve anahtarlar
 const analyticsEndpoint = "https://nlweb.cognitiveservices.azure.com/";
 const analyticsKey = "2dv6SQUJoCgsZuu1G3YCz5nkcGdzqMWYj7WLici2pLgzMWPJhCBlJQQJ99BEACYeBjFXJ3w3AAAEACOGPvoX";
-const openaiEndpoint = "https://ai-gptai749384661431.openai.azure.com/openai/deployments/gpt-4.1-mini/chat/completions?api-version=2025-01-01-preview";
 const openaiKey = "11x9IG7HZkyphyxj7I41UPWOshDNpWJAvUdiuUeVoxnMy6CPsY5cJQQJ99BDACYeBjFXJ3w3AAAAACOGQMYE";
+const openaiEndpoint = "https://ai-gptai749384661431.openai.azure.com/openai/deployments/Phi-4-multimodal-instruct/chat/completions?api-version=2024-05-01-preview";
 
 // Google Custom Search
 const apiKey = "AIzaSyDaHV-YfOjdRIcl7gFhLpU61Ev88XI6hQ4";
@@ -332,26 +332,65 @@ async function analyzeAndChat(userText) {
         `İlgili web kaynakları ve anahtar kelimeler:\n${webContext}\n\n` +
         `Yukarıdaki kaynak ve anahtar kelimelerle, markdown tablo ve ikonlarla zenginleştirilmiş, kaynaklı ve özet bir cevap ver ve unutma 2025 yılındasın.`+
         `NLWeb (Natural Language Web Search Engine) processes user queries via Google or similar search engines, analyzes the results using AI, extracts structured insights, and summarizes the findings in natural language. Below is a professional step-by-step overview of how NLWeb analyzes search results. How NLWeb Analyzes Search Results Identifies the Query Type NLWeb categorizes each user query into one of the following four categories: Company & Organization Information Product & Service Information Competitor & Market Alternatives Technology & Trend Analysis Based on this classification, it prioritizes the type of data to extract and display. Crawls & Collects Web Content From each retrieved web page, NLWeb gathers both structured and unstructured data, including: Page title Meta description/snippet URL Page content (when available) Structured data / JSON-LD (e.g., company, product, or location entities) Downloadable files (PDFs, catalogs, technical documents) Company details: owners, partners, locations, sector Product information: technical specifications, use cases, user reviews Extracts Meaningful Information (Information Extraction) Using NLP and AI algorithms, NLWeb extracts significant insights from the content, such as: This page lists the founders and owners of [company name] The technical document indicates the product is suited for [market segment] User reviews highlight a high satisfaction rate for [product name] Labels and Classifies the Information NLWeb organizes the extracted insights into a labeled dataset for structured analysis and presentation. Label Description company_name Name of the company founders Founders / Owners location Address / Country / Region products Product names features Technical product features documents PDFs, catalog links reviews Customer reviews and feedback competitors Competing companies or services news Latest news and updates Ranks Information by Priority NLWeb adapts data presentation according to the user’s role or intent: For investors → emphasizes company structure, ownership, and history For commercial buyers → highlights product features and applications For competitive analysts → focuses on market alternatives, reviews, and comparisons Summarizes Results in Natural Language & Q&A Format NLWeb transforms structured data into professional, readable summaries using GPT-4.1 mini. Example: [Company Name] is a real estate sector company headquartered in [Country]. It is owned by [individuals or entities]. According to online sources, it offers the following products: [product list]. The company operates primarily in [locations], and key competitors include: [competitor names]. Assigns Trust Score & Source Analysis (Optional) For each result, NLWeb can optionally provide a trust score based on: Credibility and authority of the source Recency of publication Repetitiveness or duplication of content Type of content (technical vs. commercial) NLWeb Technical Infrastructure Requirements (Summary) Integration with Google Search API or SerpAPI AI-powered content analysis module (OpenAI GPT-4.1-mini) Data labeling and named entity recognition pipeline Caching and logging infrastructure User-specific search history and saved queries management`
-    messageHistory.push({ role: "user", content: contextPrompt });
+        messageHistory.push({ role: "user", content: contextPrompt });
 
-    // 4. AI'ya gönder
-    const aiRes = await fetch(openaiEndpoint, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "api-key": openaiKey,
-        },
-        body: JSON.stringify({
-            messages: messageHistory,
-            max_tokens: 500
-        })
-    });
-    const aiData = await aiRes.json();
-    const aiReply = aiData.choices?.[0]?.message?.content || "AI'den cevap alınamadı.";
-    messageHistory.push({ role: "assistant", content: aiReply });
-    return aiReply;
-}
 
+        const response = await fetch(openaiEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": openaiKey,
+            },
+            body: JSON.stringify({
+                messages: messageHistory,
+                max_tokens: 500,
+                stream: true // <-- STREAMING aktif!
+            })
+        });
+    
+        // Streaming okuma
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let result = "";
+        let done = false;
+    
+        // Ekrana anlık yazdırmak için öncelikle boş bir balon oluştur
+        const chatMessages = document.getElementById("chat-messages");
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'ai-bubble max-w-[75%] p-3 text-sm';
+        messageDiv.setAttribute("style", "overflow-x:auto;word-break:break-word;");
+        chatMessages.appendChild(messageDiv);
+    
+        while (!done) {
+            const { value, done: doneReading } = await reader.read();
+            done = doneReading;
+            if (value) {
+                // OpenAI stream'de "data: ..." chunkları gelir
+                const chunk = decoder.decode(value, { stream: true });
+                // Her chunk'tan sadece content kısmını yakala
+                chunk.split('\n').forEach(line => {
+                    if (line.startsWith('data:')) {
+                        const jsonStr = line.replace('data: ', '');
+                        if (jsonStr && jsonStr !== '[DONE]') {
+                            try {
+                                const data = JSON.parse(jsonStr);
+                                const delta = data.choices?.[0]?.delta?.content;
+                                if (delta) {
+                                    result += delta;
+                                    messageDiv.innerHTML = formatAiResponse(result);
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                }
+                            } catch (e) {
+                                // ignore parse errors
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        messageHistory.push({ role: "assistant", content: result });
+        return result;
+    }
 window.addEventListener("DOMContentLoaded", function () {
     const chatInput = document.getElementById("chat-input");
     const sendBtn = document.getElementById("send-chat-btn");
