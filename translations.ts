@@ -1,0 +1,141 @@
+
+import { TranslatedStrings, Language } from './types';
+import { APP_CONFIG } from './constants'; // For default English values
+
+// Helper to get a substring for focused chat placeholders
+const shortenTitle = (title: string, length: number = 25) => title.length > length ? title.substring(0, length - 3) + "..." : title;
+
+
+const en: TranslatedStrings = {
+  headerSubtitle: APP_CONFIG.header.subtitle, 
+  promotionalBanner: APP_CONFIG.promotion.banner, 
+  searchBarPlaceholder: APP_CONFIG.searchBar.placeholder, 
+  searchButton: "Search Info",
+  searchButtonLoading: "Searching...",
+  categoriesLabel: APP_CONFIG.categoriesLabel, 
+  featureTagsLabel: APP_CONFIG.featureTagsLabel, 
+  searchResults_AIOverviewTitle: APP_CONFIG.searchResults.aiOverviewTitle, 
+  searchResults_noResultsYetTitle: APP_CONFIG.searchResults.noResultsYetTitle, 
+  searchResults_noResultsYetSubtitle: APP_CONFIG.searchResults.noResultsYetSubtitle, 
+  searchResults_searchingInsightsText: APP_CONFIG.searchResults.searchingInsightsText, 
+  searchResults_showMoreButtonLabel: APP_CONFIG.searchResults.moreResultsButton.label, 
+  chat_title: APP_CONFIG.chatSection.title, 
+  chat_prompt: APP_CONFIG.chatSection.prompt, 
+  chat_inputPlaceholder: APP_CONFIG.chatSection.inputPlaceholder, 
+  chat_inputPlaceholderFocused: (title) => `Ask about "${shortenTitle(title)}" or pick a suggestion (Info Only. Not specific professional advice. Verify & consult experts.)`,
+  chat_titleFocused: (title) => `Info: ${title} (Not specific professional advice. Verify.)`,
+  chat_endFocusedChatLabel: APP_CONFIG.chatSection.endFocusedChatLabel, 
+  chat_suggestedQuestionsLabel: APP_CONFIG.chatSection.suggestedQuestionsLabel, 
+  chat_loadingSuggestedQuestionsLabel: APP_CONFIG.chatSection.loadingSuggestedQuestionsLabel, 
+  chat_noSuggestionsGeneratedLabel: APP_CONFIG.chatSection.noSuggestionsGeneratedLabel, 
+  chat_aiTypingLabel: APP_CONFIG.chatSection.aiTypingLabel, 
+  chat_showMoreSuggestedQuestionsLabel: (count) => `Show ${count} more...`,
+  chat_systemMessageNewSearch: (query) => `New search for Audit & Business info related to "${query}". Ask general questions or about results. Information is for research ONLY. Not specific professional advice. Verify & consult experts.`,
+  chat_systemMessageNowChatting: (title) => `Now discussing Audit & Business resource: "${title}". Preparing questions. Remember, this is for informational purposes ONLY. Not specific professional advice. Verify & consult experts.`,
+  chat_systemMessageEndedFocusedChat: "Focused Audit & Business info chat ended. Ask general questions or select another result. All information is for research ONLY. Not specific professional advice. Verify & consult experts.",
+  resultCardActions: {
+    chat: "Chat (Info Only)",
+    link: "Go to Source",
+    pdf: "Audit Reports Info/Whitepapers", 
+    catalog: "SaaS Features/Service Overviews", 
+    image: "View Diagrams/Infographics",
+    news: "Industry News",
+    social: "Professional/Community Links",
+    close: "Hide"
+  },
+  footer_industryLeadersTitle: APP_CONFIG.footer.industryLeadersTitle, 
+  footer_discoverButtonText: APP_CONFIG.footer.discoverButtonText, 
+  footer_poweredByText: APP_CONFIG.footer.poweredByText, 
+};
+
+const es: TranslatedStrings = {
+  headerSubtitle: "Su Puerta de Acceso IA a Perspectivas de Auditoría y Soluciones Empresariales (Solo Investigación. Verifique Info. No Asesoramiento Profesional Específico.)",
+  promotionalBanner: "Explora Audit.Web4: Tu guía IA para Auditoría y Soluciones Empresariales. Solo Investigación. Verifica Info. No Asesoramiento Profesional Específico.",
+  searchBarPlaceholder: "Explora Auditoría, SaaS para PYMEs, Consultoría, Contratos... (Solo Info)",
+  searchButton: "Buscar Información",
+  searchButtonLoading: "Buscando...",
+  categoriesLabel: "Explorar Auditoría y Soluciones Empresariales:",
+  featureTagsLabel: "Innovaciones Destacadas en Auditoría y TecEmpresarial:",
+  searchResults_AIOverviewTitle: "Resumen de Auditoría y Soluciones Empresariales",
+  searchResults_noResultsYetTitle: "Aún no se ha encontrado información sobre Auditoría o Negocios para su consulta.",
+  searchResults_noResultsYetSubtitle: "Intenta una nueva búsqueda o selecciona una categoría. Esta plataforma es SÓLO para fines informativos. SIEMPRE verifique la información crítica y consulte a expertos calificados.",
+  searchResults_searchingInsightsText: "Buscando perspectivas en Auditoría y Negocios...",
+  searchResults_showMoreButtonLabel: "Mostrar Más Perspectivas Empresariales",
+  chat_title: "Buscador de Recursos Empresariales y de Auditoría de Audit.Web4",
+  chat_prompt: "¡Bienvenido a Audit.Web4! Puedo ayudar a encontrar información sobre auditoría, SaaS para PYMEs, consultoría y gestión de contratos. ¿Cómo puedo asistir? CRÍTICO: Soy un asistente IA. NO PUEDO proporcionar asesoramiento profesional (auditoría, financiero, legal, implementación), garantías o avales. Mis respuestas son SÓLO para fines informativos y de investigación. SIEMPRE verifique la información crítica y consulte a expertos calificados.",
+  chat_inputPlaceholder: "Pregunta sobre Auditoría, SaaS, Consultoría... (Solo Info)",
+  chat_inputPlaceholderFocused: (title) => `Pregunta sobre "${shortenTitle(title)}" o elige una sugerencia (Solo Info. No asesoramiento profesional específico. Verifica y consulta expertos.)`,
+  chat_titleFocused: (title) => `Info: ${title} (No asesoramiento profesional específico. Verifica.)`,
+  chat_endFocusedChatLabel: "Finalizar Chat de Info de Auditoría y Negocios Enfocado",
+  chat_suggestedQuestionsLabel: "Preguntas sugeridas para tu exploración de Auditoría y Negocios:",
+  chat_loadingSuggestedQuestionsLabel: "Cargando perspectivas en Auditoría y Negocios...",
+  chat_noSuggestionsGeneratedLabel: "No se generaron sugerencias específicas. Haz preguntas generales sobre auditoría o soluciones empresariales. Recuerda, esto es SÓLO para fines informativos. Siempre verifica la información crítica y consulta a expertos calificados.",
+  chat_aiTypingLabel: "IA está escribiendo...",
+  chat_showMoreSuggestedQuestionsLabel: (count) => `Mostrar ${count} más...`,
+  chat_systemMessageNewSearch: (query) => `Nueva búsqueda de información de Auditoría y Negocios relacionada con "${query}". Haz preguntas generales o sobre resultados. La información es SÓLO para investigación. No asesoramiento profesional específico. Verifica y consulta expertos.`,
+  chat_systemMessageNowChatting: (title) => `Ahora discutiendo recurso de Auditoría y Negocios: "${title}". Preparando preguntas. Recuerda, esto es SÓLO para fines informativos. No asesoramiento profesional específico. Verifica y consulta expertos.`,
+  chat_systemMessageEndedFocusedChat: "Chat de info de Auditoría y Negocios enfocado finalizado. Haz preguntas generales o selecciona otro resultado. Toda la información es SÓLO para investigación. No asesoramiento profesional específico. Verifica y consulta expertos.",
+  resultCardActions: {
+    chat: "Chat (Solo Info)",
+    link: "Ir a Fuente",
+    pdf: "Info Informes Auditoría/Whitepapers",
+    catalog: "Características SaaS/Resúmenes Servicios",
+    image: "Ver Diagramas/Infografías",
+    news: "Noticias del Sector",
+    social: "Enlaces Profesionales/Comunidad",
+    close: "Ocultar"
+  },
+  footer_industryLeadersTitle: "Proveedores Clave de Auditoría y Soluciones Empresariales",
+  footer_discoverButtonText: "Descubre Audit.Web4",
+  footer_poweredByText: "Impulsado por Web4.0 os Platform WY.USA",
+};
+
+const tr: TranslatedStrings = {
+  headerSubtitle: "Denetim ve İş Çözümleri Bilgilerine Yapay Zeka Destekli Geçidiniz (Sadece Araştırma. Bilgiyi Doğrulayın. Özel Profesyonel Tavsiye Değil.)",
+  promotionalBanner: "Audit.Web4'ü Keşfedin: Denetim ve İş Çözümleri için YZ rehberiniz. Sadece Araştırma. Bilgiyi Doğrulayın. Özel Profesyonel Tavsiye Değil.",
+  searchBarPlaceholder: "Denetim, KOBİ SaaS, Danışmanlık, Sözleşmeler Araştırın... (Sadece Bilgi)",
+  searchButton: "Bilgi Ara",
+  searchButtonLoading: "Aranıyor...",
+  categoriesLabel: "Denetim ve İş Çözümlerini Keşfet:",
+  featureTagsLabel: "Öne Çıkan Denetim ve İş Teknolojisi İnovasyonları:",
+  searchResults_AIOverviewTitle: "Denetim ve İş Çözümleri Özeti",
+  searchResults_noResultsYetTitle: "Sorgunuz için henüz Denetim veya İş bilgisi bulunamadı.",
+  searchResults_noResultsYetSubtitle: "Yeni bir arama yapın veya bir kategori seçin. Bu platform YALNIZCA bilgilendirme amaçlıdır. DAİMA kritik bilgileri doğrulayın ve yetkili uzmanlara danışın.",
+  searchResults_searchingInsightsText: "Denetim ve İş bilgileri aranıyor...",
+  searchResults_showMoreButtonLabel: "Daha Fazla İş Bilgisi Göster",
+  chat_title: "Audit.Web4 İş Kaynakları Bulucu",
+  chat_prompt: "Audit.Web4'e hoş geldiniz! Denetim, KOBİ SaaS, danışmanlık ve sözleşme yönetimi hakkında bilgi bulmanıza yardımcı olabilirim. Nasıl yardımcı olabilirim? KRİTİK: Ben bir YZ asistanıyım. Profesyonel tavsiye (denetim, finansal, hukuki, uygulama), garanti veya onay SAĞLAYAMAM. Yanıtlarım YALNIZCA bilgilendirme ve araştırma amaçlıdır. DAİMA kritik bilgileri doğrulayın ve özel tavsiye için yetkili uzmanlara danışın.",
+  chat_inputPlaceholder: "Denetim, SaaS, Danışmanlık hakkında sorun... (Sadece Bilgi)",
+  chat_inputPlaceholderFocused: (title) => `"${shortenTitle(title)}" hakkında sorun veya bir öneri seçin (Sadece Bilgi. Özel profesyonel tavsiye değil. Doğrulayın ve uzmanlara danışın.)`,
+  chat_titleFocused: (title) => `Bilgi: ${title} (Özel profesyonel tavsiye değil. Doğrulayın.)`,
+  chat_endFocusedChatLabel: "Odaklanmış Denetim ve İş Bilgi Sohbetini Bitir",
+  chat_suggestedQuestionsLabel: "Denetim ve İş keşfiniz için önerilen sorular:",
+  chat_loadingSuggestedQuestionsLabel: "Denetim ve İş içgörüleri yükleniyor...",
+  chat_noSuggestionsGeneratedLabel: "Belirli bir öneri oluşturulmadı. Denetim veya iş çözümleri hakkında genel sorular sorun. Unutmayın, bu YALNIZCA bilgilendirme amaçlıdır. Daima kritik bilgileri doğrulayın ve yetkili uzmanlara danışın.",
+  chat_aiTypingLabel: "YZ yazıyor...",
+  chat_showMoreSuggestedQuestionsLabel: (count) => `${count} tane daha göster...`,
+  chat_systemMessageNewSearch: (query) => `"${query}" ile ilgili yeni Denetim ve İş bilgisi araması. Genel sorular sorun veya sonuçlar hakkında. Bilgiler YALNIZCA araştırma amaçlıdır. Özel profesyonel tavsiye değil. Doğrulayın ve uzmanlara danışın.`,
+  chat_systemMessageNowChatting: (title) => `Şimdi tartışılan Denetim ve İş kaynağı: "${title}". Sorular hazırlanıyor. Unutmayın, bu YALNIZCA bilgilendirme amaçlıdır. Özel profesyonel tavsiye değil. Doğrulayın ve uzmanlara danışın.`,
+  chat_systemMessageEndedFocusedChat: "Odaklanmış Denetim ve İş bilgi sohbeti sona erdi. Genel sorular sorun veya başka bir sonuç seçin. Tüm bilgiler YALNIZCA araştırma amaçlıdır. Özel profesyonel tavsiye değil. Doğrulayın ve uzmanlara danışın.",
+  resultCardActions: {
+    chat: "Sohbet (Sadece Bilgi)",
+    link: "Kaynağa Git",
+    pdf: "Denetim Rapor Bilgisi/Whitepaperlar",
+    catalog: "SaaS Özellikleri/Hizmet Özetleri",
+    image: "Şemaları/İnfografikleri Görüntüle",
+    news: "Sektör Haberleri",
+    social: "Profesyonel/Topluluk Bağlantıları",
+    close: "Gizle"
+  },
+  footer_industryLeadersTitle: "Önemli Denetim ve İş Çözümü Sağlayıcıları",
+  footer_discoverButtonText: "Audit.Web4'ü Keşfet",
+  footer_poweredByText: "Web4.0 os Platformu WY.ABD tarafından desteklenmektedir",
+};
+
+
+export const translations: Record<string, TranslatedStrings> = {
+  en,
+  es,
+  tr,
+  // Add other languages here. For now, they will fall back to English if not defined.
+};
